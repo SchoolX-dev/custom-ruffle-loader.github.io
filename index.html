@@ -175,7 +175,7 @@
             background: var(--ruffle-blue);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center; /* Center the items horizontally */
             gap: 16px;
             color: white;
             padding: 8px 16px;
@@ -192,10 +192,10 @@
             flex: 0 0 content;
         }
 
-        .select-container > div {
+        .select-container {
             display: flex;
+            gap: 20px;
             align-items: center;
-            gap: 4px;
         }
 
         #web-url {
@@ -290,20 +290,17 @@
             <img src="logo.png" alt="Ruffle Logo" class="logo">
         </div>
         <div class="select-container">
-            <div>
-                <input type="file" id="fileInput" accept=".swf" style="display: none;">
-                <button onclick="selectFile()" style="background: var(--ruffle-light-blue); color: white; border: 2px solid var(--ruffle-blue); border-radius: 8px; padding: 6px 8px; cursor: pointer; text-align: center; text-shadow: 0 0 0.1px white;">Select SWF File</button>
-                <input type="text" id="urlInput" placeholder="Enter SWF URL">
-                <button onclick="play()" style="background: var(--ruffle-light-blue); color: white; border: 2px solid var(--ruffle-blue); border-radius: 8px; padding: 6px 8px; cursor: pointer; text-align: center; text-shadow: 0 0 0.1px white;">Play</button>
-                </button>
-            </div>
+            <input type="file" id="fileInput" accept=".swf" style="display: none;">
+            <button onclick="selectFile()">Select SWF File</button>
+            <input type="text" id="urlInput" placeholder="Enter SWF URL">
+            <button onclick="play()">Play</button>
         </div>
     </div>
     <div id="main">
         <div id="player-container">
-            <div id="overlay" hidden=""></div>
+            <div id="overlay" hidden></div>
         </div>
-        <div id="info-container" hidden="">
+        <div id="info-container" hidden>
             <span>Info</span>
             <span id="info-details"></span>
         </div>
