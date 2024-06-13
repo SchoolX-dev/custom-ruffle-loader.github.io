@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruffle Player</title>
     <script src="./ruffle.js"></script>
     <style>
         /* Common CSS */
@@ -77,8 +81,6 @@
             text-align: center;
             background: var(--ruffle-light-blue);
             color: white;
-
-            /* This gives the text a little more weight without outright bolding it */
             text-shadow: 0 0 0.1px white;
         }
 
@@ -143,11 +145,11 @@
             background: silver;
         }
 
-        .option.checkbox input:checked + label::before {
+        .option.checkbox input:checked+label::before {
             background: var(--ruffle-dark-orange);
         }
 
-        .option.checkbox input:checked + label::after {
+        .option.checkbox input:checked+label::after {
             background: var(--ruffle-orange);
             right: 1px;
         }
@@ -184,7 +186,7 @@
             box-sizing: border-box;
         }
 
-        #nav > * {
+        #nav>* {
             display: flex;
             gap: 16px;
         }
@@ -194,7 +196,7 @@
             flex: 0 0 content;
         }
 
-        .select-container > div {
+        .select-container>div {
             display: flex;
             align-items: center;
             gap: 4px;
@@ -229,7 +231,7 @@
             flex-grow: 1;
         }
 
-        #player-container > * {
+        #player-container>* {
             position: relative;
             width: 100%;
             height: 100%;
@@ -250,7 +252,7 @@
             transition-timing-function: ease-out;
         }
 
-        #overlay:not([hidden]) ~ #player {
+        #overlay:not([hidden])~#player {
             bottom: 100%;
         }
 
@@ -286,6 +288,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="nav">
         <div>
@@ -293,18 +296,18 @@
         </div>
         <div class="select-container">
             <div>
-                <input type="file" id="fileInput" accept=".swf">
-                <button onclick="selectFile()">Select SWF File</button>
-                <input type="text" id="urlInput" placeholder="Enter SWF URL" id="web-url">
+                <input type="file" id="fileInput" accept=".swf" hidden>
+                <label for="fileInput" class="file-label">Select SWF File</label>
+                <input type="text" id="urlInput" placeholder="Enter SWF URL">
                 <button onclick="play()">Play</button>
             </div>
         </div>
     </div>
     <div id="main">
         <div id="player-container">
-            <div id="overlay" hidden></div>
+            <div id="overlay" hidden=""></div>
         </div>
-        <div id="info-container" hidden>
+        <div id="info-container" hidden="">
             <span>Info</span>
             <span id="info-details"></span>
         </div>
