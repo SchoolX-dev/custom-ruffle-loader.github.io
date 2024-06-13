@@ -108,183 +108,47 @@
             padding-right: 60px;
         }
 
-        /* Checkbox (Based on "Pure CSS Slider Checkboxes": https://codepen.io/Qvcool/pen/bdzVYW) */
-        .option.checkbox input {
-            width: 40px;
-            height: 20px;
-            margin: auto;
-            cursor: pointer;
-            z-index: 1;
-            opacity: 0;
+        /* Custom file input button styles */
+        .custom-file-input {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-right: 4px;
         }
 
-        .option.checkbox label::before,
-        .option.checkbox label::after {
-            content: "";
+        .custom-file-input input[type='file'] {
             position: absolute;
-            border-radius: 10px;
             top: 0;
-            bottom: 0;
-            margin: auto;
-            transition:
-                background 0.2s,
-                right 0.2s;
-        }
-
-        .option.checkbox label::before {
-            height: 20px;
-            width: 40px;
             right: 0;
-            background: gray;
-        }
-
-        .option.checkbox label::after {
-            height: 18px;
-            width: 18px;
-            right: 21px;
-            background: silver;
-        }
-
-        .option.checkbox input:checked+label::before {
-            background: var(--ruffle-dark-orange);
-        }
-
-        .option.checkbox input:checked+label::after {
-            background: var(--ruffle-orange);
-            right: 1px;
-        }
-
-        /* Number input */
-        .option.number-input input {
-            width: 60px;
-            height: 20px;
-            margin: auto;
-        }
-
-        /* Player CSS */
-        body {
-            position: absolute;
-            inset: 0;
-            padding: 0;
             margin: 0;
-            font-family: Lato, sans-serif;
-            font-size: 100%;
-            display: flex;
-            flex-direction: column;
-            background: black;
-        }
-
-        #nav {
-            width: 100%;
-            background: var(--ruffle-blue);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            color: white;
-            padding: 8px 16px;
-            box-sizing: border-box;
-        }
-
-        #nav>* {
-            display: flex;
-            gap: 16px;
-        }
-
-        .logo {
-            height: 32px;
-            flex: 0 0 content;
-        }
-
-        .select-container>div {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        #web-url {
-            width: min(40vw, 500px);
-        }
-
-        #local-file {
-            display: none;
-        }
-
-        #local-file-name {
-            font-size: smaller;
-        }
-
-        #toggle-info,
-        #reload-swf {
+            padding: 0;
+            font-size: 20px;
             cursor: pointer;
-        }
-
-        #main {
-            position: relative;
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-        }
-
-        #player-container {
-            overflow-y: hidden;
-            flex-grow: 1;
-        }
-
-        #player-container>* {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        #overlay {
-            pointer-events: none;
-            border: 8px dashed var(--ruffle-orange);
-            border-radius: 30px;
             opacity: 0;
-            transition: opacity 0.3s ease-in;
-            box-sizing: border-box;
-            z-index: 1;
+            filter: alpha(opacity=0); /* For IE8 and earlier */
         }
 
-        #overlay.drag {
-            opacity: 1;
-            transition-timing-function: ease-out;
+        .custom-file-input button {
+            padding: 6px 8px;
+            border: 2px solid var(--ruffle-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            background: var(--ruffle-light-blue);
+            color: white;
+            text-shadow: 0 0 0.1px white;
+            display: inline-block;
+            transition: transform 0.2s ease-in-out;
         }
 
-        #overlay:not([hidden])~#player {
-            bottom: 100%;
+        .custom-file-input button:hover {
+            transform: scale(1.05);
         }
 
-        #info-container {
-            width: 300px;
-            background-color: var(--ruffle-blue);
-            padding: 4px 16px;
-            flex-direction: column;
-            gap: 8px;
-            box-sizing: border-box;
-        }
-
-        #info-container span:first-child {
-            text-shadow: 0 0 1px white;
-        }
-
-        #info-container span:first-child::after {
-            content: ":";
-        }
-
-        #info-container span:last-child {
-            float: right;
-        }
-
-        /* TODO: Make metadata element IDs kebab-case, and convert back and forth
-                between that and the camelCase of metadata JS object keys. */
-        /* stylelint-disable-next-line selector-id-pattern */
-        #backgroundColor {
-            width: 1em;
-            height: 1em;
-            border: 2px solid var(--ruffle-dark-blue);
-            background-color: white;
+        /* Style for the label text */
+        .custom-file-input span {
+            display: inline-block;
+            padding: 5px 10px;
         }
     </style>
 </head>
@@ -296,8 +160,11 @@
         </div>
         <div class="select-container">
             <div>
-                <input type="file" id="fileInput" accept=".swf" hidden>
-                <label for="fileInput" class="file-label">Select SWF File</label>
+                <!-- Custom file input button -->
+                <label for="customFileInput" class="custom-file-input">
+                    <span>Select SWF File</span>
+                    <input type="file" id="customFileInput" accept=".swf">
+                </label>
                 <input type="text" id="urlInput" placeholder="Enter SWF URL">
                 <button onclick="play()">Play</button>
             </div>
@@ -312,58 +179,6 @@
             <span id="info-details"></span>
         </div>
     </div>
-
-    <script type="text/javascript">
-        let player;
-
-        function initializePlayer() {
-            if (!player) {
-                const ruffle = window.RufflePlayer.newest();
-                player = ruffle.createPlayer();
-                player.config = {
-                    contextMenu: "off",
-                    autoplay: false,
-                    warnOnUnsupportedContent: false,
-                    allowScriptAccess: true,
-                    maxExecutionDuration: 30
-                };
-                const container = document.getElementById('player-container');
-                container.innerHTML = ''; // Clear previous player if any
-                container.appendChild(player);
-                player.style.cssText = 'width:100%; height:100%;';
-                container.style.display = 'flex'; // Show the container
-            }
-        }
-
-        function selectFile() {
-            document.getElementById('fileInput').click();
-        }
-
-        document.getElementById('fileInput').addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file);
-                initializePlayer();
-                player.load(url).then(() => {
-                    console.log("SWF file loaded successfully.");
-                }).catch((error) => {
-                    console.error("Error loading SWF file:", error);
-                });
-            }
-        });
-
-        function play() {
-            const urlInput = document.getElementById('urlInput').value;
-            if (urlInput) {
-                initializePlayer();
-                player.load(urlInput).then(() => {
-                    console.log("SWF URL loaded successfully.");
-                }).catch((error) => {
-                    console.error("Error loading SWF URL:", error);
-                });
-            }
-        }
-    </script>
 </body>
-</html>
 
+</html>
