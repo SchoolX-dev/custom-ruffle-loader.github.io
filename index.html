@@ -221,9 +221,7 @@
             position: relative;
             flex: 1;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            flex-direction: row;
         }
 
         #player-container {
@@ -278,39 +276,31 @@
         }
 
         /* TODO: Make metadata element IDs kebab-case, and convert back and forth
-                between that and the camel
-            --ruffle-blue);
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: center;
-            background: var(--ruffle-light-blue);
-            color: white;
-            text-shadow: 0 0 0.1px white; /* This gives the text a little more weight without outright bolding it */
+                between that and the camelCase of metadata JS object keys. */
+        /* stylelint-disable-next-line selector-id-pattern */
+        #backgroundColor {
+            width: 1em;
+            height: 1em;
+            border: 2px solid var(--ruffle-dark-blue);
+            background-color: white;
         }
-
-        /* Other styles... */
-
-        /* Main content */
-        #main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        /* End of styles */
-
     </style>
 </head>
 <body>
-    <div id="main-content">
-        <h1>Ruffle Player</h1>
-        <p>Select or upload a SWF file to play:</p>
-        <input type="file" id="fileInput" accept=".swf" style="display: none;">
-        <button onclick="selectFile()">Select SWF File</button>
-        <input type="text" id="urlInput" placeholder="Enter SWF URL">
-        <button onclick="play()">Play</button>
+    <div id="nav">
+        <div>
+            <img src="logo.png" alt="Ruffle Logo" class="logo">
+        </div>
+        <div class="select-container">
+            <div>
+                <input type="file" id="fileInput" accept=".swf">
+                <button onclick="selectFile()">Select SWF File</button>
+                <input type="text" id="urlInput" placeholder="Enter SWF URL" id="web-url">
+                <button onclick="play()">Play</button>
+            </div>
+        </div>
+    </div>
+    <div id="main">
         <div id="player-container">
             <div id="overlay" hidden></div>
         </div>
@@ -321,8 +311,56 @@
     </div>
 
     <script type="text/javascript">
-        // JavaScript code for handling player functionality (loading SWF files, etc.)
-        // Include your JavaScript code here
+        let player;
+
+        function initializePlayer() {
+            if (!player) {
+                const ruffle = window.RufflePlayer.newest();
+                player = ruffle.createPlayer();
+                player.config = {
+                    contextMenu: "off",
+                    autoplay: false,
+                    warnOnUnsupportedContent: false,
+                    allowScriptAccess: true,
+                    maxExecutionDuration: 30
+                };
+                const container = document.getElementById('player-container');
+                container.innerHTML = ''; // Clear previous player if any
+                container.appendChild(player);
+                player.style.cssText = 'width:100%; height:100%;';
+                container.style.display = 'flex'; // Show the container
+            }
+        }
+
+        function selectFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                initializePlayer();
+                player.load(url).then(() => {
+                    console.log("SWF file loaded successfully.");
+                }).catch((error) => {
+                    console.error("Error loading SWF file:", error);
+                });
+            }
+        });
+
+        function play() {
+            const urlInput = document.getElementById('urlInput').value;
+            if (urlInput) {
+                initializePlayer();
+                player.load(urlInput).then(() => {
+                    console.log("SWF URL loaded successfully.");
+                }).catch((error) => {
+                    console.error("Error loading SWF URL:", error);
+                });
+            }
+        }
     </script>
 </body>
 </html>
+
