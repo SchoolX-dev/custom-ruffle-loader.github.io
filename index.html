@@ -294,7 +294,6 @@
         <div class="select-container">
             <div>
                 <input type="file" id="fileInput" accept=".swf">
-                <button onclick="selectFile()">Select SWF File</button>
                 <input type="text" id="urlInput" placeholder="Enter SWF URL" id="web-url">
                 <button onclick="play()">Play</button>
             </div>
@@ -345,6 +344,19 @@
                     console.log("SWF file loaded successfully.");
                 }).catch((error) => {
                     console.error("Error loading SWF file:", error);
+                });
+            }
+        });
+
+        function play() {
+            const urlInput = document.getElementById('urlInput').value;
+            if (urlInput) {
+                initializePlayer();
+                player.load(urlInput).then(() => {
+                    console.log("SWF URL loaded successfully.");
+                }).catch((error) => {
+                    console.error("Error loading SWF URL:", error);
+               
                 });
             }
         });
