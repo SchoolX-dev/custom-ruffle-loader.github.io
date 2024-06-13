@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <script src="./ruffle.js"></script>
     <style>
@@ -10,12 +9,13 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         #container {
             width: 100%;
             height: 100%;
-            display: flex;
+            display: none; /* Initially hide the container */
             justify-content: center;
             align-items: center;
         }
@@ -25,14 +25,12 @@
         }
     </style>
 </head>
-
 <body>
-    <div id="container">
-        <input type="file" id="fileInput" accept=".swf">
-        <button onclick="selectFile()">Select File</button>
-        <input type="text" id="urlInput" placeholder="Enter URL">
-        <button onclick="play()">Play</button>
-    </div>
+    <div id="container"></div>
+    <input type="file" id="fileInput" accept=".swf">
+    <button onclick="selectFile()">Select File</button>
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <button onclick="play()">Play</button>
 
     <script type="text/javascript">
         const ruffle = window.RufflePlayer.newest();
@@ -52,26 +50,28 @@
 
         document.getElementById('fileInput').addEventListener('change', function () {
             const file = this.files[0];
-            const url = URL.createObjectURL(file);
-            player.load(url);
+            if (file) {
+                const url = URL.createObjectURL(file);
+                loadAndShowPlayer(url);
+            }
         });
 
         function play() {
             const urlInput = document.getElementById('urlInput').value;
             if (urlInput) {
-                player.load(urlInput);
+                loadAndShowPlayer(urlInput);
             }
         }
 
-        function loadDefault() {
-            player.load("example.swf");
+        function loadAndShowPlayer(url) {
+            player.load(url).then(() => {
+                container.style.display = 'flex';
+                player.style.cssText = 'width:100%; height: 100%;';
+            }).catch((e) => {
+                console.error("Error loading SWF:", e);
+            });
+            container.appendChild(player);
         }
-
-        container.appendChild(player);
-        player.style.cssText = 'width:100%; height: 100%; display: none;';
-
-        loadDefault();
     </script>
 </body>
-
 </html>
