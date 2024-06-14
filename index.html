@@ -15,21 +15,79 @@
         body {
             background: var(--ruffle-blue);
             font: 14px Arial, sans-serif;
-            margin: 0;
+            margin: auto;
             color: white;
         }
 
-        /* Navigation CSS */
+        /* Player CSS */
+        body {
+            position: absolute;
+            inset: 0;
+            padding: 0;
+            margin: 0;
+            font-family: Lato, sans-serif;
+            font-size: 100%;
+            display: flex;
+            flex-direction: column;
+            background: black;
+        }
+
         #nav {
+            width: 100%;
             background: var(--ruffle-blue);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between; /* Updated to space-between */
             color: white;
             padding: 8px 16px;
             box-sizing: border-box;
         }
 
+        .select-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center; /* Center the items horizontally */
+        }
+
+        button {
+            padding: 6px 8px;
+            border: 2px solid var(--ruffle-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--ruffle-light-blue);
+            color: white;
+            text-shadow: 0 0 0.1px white;
+        }
+
+        button:hover {
+            background: var(--ruffle-dark-blue);
+        }
+
+        input[type="text"] {
+            background: var(--ruffle-dark-blue);
+            color: white;
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        input[type="text"]::placeholder {
+            opacity: 0.5;
+            color: white;
+        }
+
+        #file-name {
+            font-size: smaller;
+        }
+
+        /* Logo styling */
+        .logo {
+            height: 32px;
+            margin-right: 16px;
+        }
+
+        /* Center the logo and select container */
         .left {
             display: flex;
             align-items: center;
@@ -41,32 +99,14 @@
             justify-content: center;
         }
 
-        /* Player and Content CSS */
-        #content {
+        /* Player Container */
+        #player-container {
+            /* No specific width or height defined */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 40px); /* Subtracting the navigation height */
-            padding: 20px;
-            box-sizing: border-box;
+            margin-top: 20px;
         }
-
-        #player-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        #overlay {
-            display: none; /* Hidden by default */
-        }
-
-        #info-container {
-            display: none; /* Hidden by default */
-        }
-
-        /* Rest of the CSS remains the same */
-        /* ... */
-
     </style>
 </head>
 <body>
@@ -82,9 +122,10 @@
             <span id="file-name"></span> <!-- Added file name display -->
         </div>
     </div>
-    <div id="content">
-        <div id="player-container"></div>
-        <div id="overlay" hidden></div>
+    <div id="main">
+        <div id="player-container">
+            <div id="overlay" hidden></div>
+        </div>
         <div id="info-container" hidden>
             <span>Info</span>
             <span id="info-details"></span>
@@ -106,8 +147,10 @@
             };
             const container = document.getElementById('player-container');
             container.innerHTML = ''; // Clear previous player if any
+           
             container.appendChild(player);
             player.style.cssText = 'width:100%; height:100%;';
+            container.style.display = 'flex'; // Show the container
         }
 
         function selectFile() {
@@ -137,7 +180,8 @@
                 player.load(urlInput).then(() => {
                     console.log("SWF URL loaded successfully.");
                 }).catch((error) => {
-                    console.error("Error loading SWF URL:", error);
+                    console
+                console.error("Error loading SWF URL:", error);
                 });
             }
         }
