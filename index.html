@@ -86,14 +86,26 @@
             height: 32px;
             margin-right: 16px;
         }
+
+        /* Center the logo and select container */
+        .left {
+            display: flex;
+            align-items: center;
+        }
+
+        .center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <div id="nav">
-        <div>
+        <div class="left">
             <img src="./logo.svg" alt="Ruffle Logo" class="logo">
         </div>
-        <div class="select-container">
+        <div class="center select-container">
             <input type="file" id="fileInput" accept=".swf" style="display: none;">
             <button onclick="selectFile()">Select SWF File</button>
             <input type="text" id="urlInput" placeholder="Enter SWF URL">
