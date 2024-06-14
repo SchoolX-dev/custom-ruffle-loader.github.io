@@ -36,15 +36,17 @@
             width: 100%;
             background: var(--ruffle-blue);
             display: flex;
-            flex-direction: column; /* Change to column layout */
-            align-items: center; /* Center items horizontally */
+            align-items: center;
+            justify-content: center; /* Center the items horizontally */
             color: white;
             padding: 8px 16px;
             box-sizing: border-box;
         }
 
         .select-container {
-            margin-top: 16px; /* Add margin to separate from the logo */
+            display: flex;
+            gap: 20px;
+            align-items: center;
         }
 
         button {
@@ -82,7 +84,6 @@
         .logo {
             height: 32px;
             margin-right: 16px;
-            margin-left: 16px; /* Added left margin */
         }
     </style>
 </head>
